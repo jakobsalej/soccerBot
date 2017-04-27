@@ -29,9 +29,9 @@ app.get('/webhook', function(req, res) {
 
 // get messages from users
 app.post('/webhook', function (req, res) {
-  //console.log('Getting post request!');
+  console.log('Getting post request!');
   var data = req.body;
-  //console.log('This is req data:', data);
+  console.log('This is req data:', data);
 
   // Make sure this is a page subscription
   if (data.object === 'page') {
@@ -63,7 +63,7 @@ app.post('/webhook', function (req, res) {
 
 // launch app!
 app.listen(port, function () {
-  console.log('Example app listening on port ' + port);
+  console.log('Example app listening on port');
 });
 
 
