@@ -30,7 +30,7 @@ app.get('/webhook', function(req, res) {
 
 // get messages from users
 app.post('/webhook', function (req, res) {
-  console.log('Getting post request!');
+  console.log('Getting post request!:', req);
   var data = req.body;
   console.log('This is req data:', data);
 
