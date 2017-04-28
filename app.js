@@ -63,7 +63,7 @@ app.post('/webhook', function (req, res) {
 
 // launch app!
 app.listen(port, function () {
-  console.log('Example app listening on port');
+  console.log('Example app listening on port ' + port);
 });
 
 
