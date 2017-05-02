@@ -1,12 +1,20 @@
 var bodyParser = require('body-parser');
 var request = require('request');
+var apiai = require('apiai');
 var express = require('express');
 var app = express();
 
 
+// variables
+const CLIENT_ACCESS_TOKEN = "59921fd442bb49c88ecd28aad2d97095";
+const VERIFY_TOKEN = "this_is_my_token";
+const PAGE_ACCESS_TOKEN = "EAAJA0YZCn42YBAJIgbHxP05Y0V7I1nMCZAtjflJzkwfW0JBp8LS6Dum2w2jyVbVOOvQpzKGOeBMRpQUbVBY9B8IrLZAJ2RFgUYHFbBVwSKQrTvfcGHhZAvwwzUpM8eMAmN2KTdwwUxrZAx1QADz7aSe3V6EE3Ar4956DL49A6mQZDZD";
+
+
+var apiaiApp = apiai(CLIENT_ACCESS_TOKEN);
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-
 // parse application/json
 app.use(bodyParser.json());
 
@@ -16,19 +24,15 @@ app.get('/', function (req, res) {
 });
 
 
-// variables
-const verify_token = "this_is_my_token";
-const PAGE_ACCESS_TOKEN = "EAAJA0YZCn42YBAJIgbHxP05Y0V7I1nMCZAtjflJzkwfW0JBp8LS6Dum2w2jyVbVOOvQpzKGOeBMRpQUbVBY9B8IrLZAJ2RFgUYHFbBVwSKQrTvfcGHhZAvwwzUpM8eMAmN2KTdwwUxrZAx1QADz7aSe3V6EE3Ar4956DL49A6mQZDZD";
-
 // set the port of our application
 // process.env.PORT lets the port be set by Heroku
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 
 
 // messenger part
 app.get('/webhook', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === verify_token) {
+      req.query['hub.verify_token'] === VERIFY_TOKEN) {
     console.log("Validating webhook");
     res.status(200).send(req.query['hub.challenge']);
   } else {
@@ -105,7 +109,7 @@ function receivedMessage(event) {
         break;
 
       default:
-        sendTextMessage(senderID, messageText);
+        callApiAi(senderID, messageText);
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
@@ -115,18 +119,35 @@ function receivedMessage(event) {
 
 
 
-function sendTextMessage(recipientId, messageText) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: messageText
-    }
-  };
+function callApiAi(recipientId, messageText) {
+  
+  console.log('Calling Api.ai');
+  var apiai = apiaiApp.textRequest(messageText, {
+    sessionId: 'soccerBot' // use any arbitrary id
+  });
+
+  apiai.on('response', (response) => {
+    // Got a response from api.ai. Let's POST to Facebook Messenger
+    var aiText = response.result.fulfillment.speech;
+    console.log('Got response from Api.ai:', aiText);
+    var messageData = {
+	  recipient: {
+	    id: recipientId
+	  },
+	  message: {
+	    text: aiText
+	  }
+	};
 
   callSendAPI(messageData);
-}
+  });
+
+  apiai.on('error', (error) => {
+    console.log(error);
+  });
+
+  apiai.end();
+}  
 
 
 function callSendAPI(messageData) {
