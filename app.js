@@ -8,8 +8,7 @@ var app = express();
 // variables
 const CLIENT_ACCESS_TOKEN = "59921fd442bb49c88ecd28aad2d97095";
 const VERIFY_TOKEN = "this_is_my_token";
-const PAGE_ACCESS_TOKEN = "EAAJA0YZCn42YBAJIgbHxP05Y0V7I1nMCZAtjflJzkwfW0JBp8LS6Dum2w2jyVbVOOvQpzKGOeBMRpQUbVBY9B8IrLZAJ2RFgUYHFbBVwSKQrTvfcGHhZAvwwzUpM8eMAmN2KTdwwUxrZAx1QADz7aSe3V6EE3Ar4956DL49A6mQZDZD";
-
+const PAGE_ACCESS_TOKEN = "EAAJA0YZCn42YBAB2nzQnW7emswOZBl6Xie8Ug8theCvmlt8ubSCviNhicKqqWyNsxVMhVzIrClZAsRpXmlnbbY5954ExbRNYtFZCo1ISxCXWYtEuNJR5LvWvKh3S4ffknNwDsCCKuRlcdLHuUuKcNzJlPpnWpBGLzLUun0p2dgZDZD";
 
 var apiaiApp = apiai(CLIENT_ACCESS_TOKEN);
 
@@ -18,15 +17,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+// set the port of our application
+// process.env.PORT lets the port be set by Heroku
+var port = process.env.PORT || 3000;
+
+
 app.get('/', function (req, res) {
   console.log('Requesting root...');
   res.send('Hello World!');
 });
-
-
-// set the port of our application
-// process.env.PORT lets the port be set by Heroku
-var port = process.env.PORT || 3000;
 
 
 // messenger part
