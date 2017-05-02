@@ -2,8 +2,20 @@ var bodyParser = require('body-parser');
 var request = require('request');
 var apiai = require('apiai');
 var express = require('express');
+var MongoClient = require('mongodb').MongoClient;
+
 var app = express();
 
+var db;
+MongoClient.connect('mongodb://admin:admin@ds029381.mlab.com:29381/soccer_bot_db', (err, database) => {
+  if (err) return console.log(err);
+  db = database;
+  
+  // launch app!
+  app.listen(port, function () {
+    console.log('App listening on port ' + port);
+  });
+});
 
 // variables
 const CLIENT_ACCESS_TOKEN = "59921fd442bb49c88ecd28aad2d97095";
@@ -77,10 +89,7 @@ app.post('/webhook', function (req, res) {
 });
 
 
-// launch app!
-app.listen(port, function () {
-  console.log('Example app listening on port ' + port);
-});
+
 
 
 function receivedMessage(event) {
@@ -129,6 +138,9 @@ function callApiAi(recipientId, messageText) {
     // Got a response from api.ai. Let's POST to Facebook Messenger
     var aiText = response.result.fulfillment.speech;
     console.log('Got response from Api.ai:', aiText);
+    var result = response.result;
+    console.log('Result:', result);
+
     var messageData = {
 	  recipient: {
 	    id: recipientId
