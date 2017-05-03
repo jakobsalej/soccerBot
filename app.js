@@ -144,7 +144,7 @@ function callApiAi(recipientId, messageText) {
 
     	var user = {
     		facebookId: recipientId,
-    		team: result.parameters.Entity
+    		team: result.parameters.Entity,
     		sendUpdates: true
     	};
 
