@@ -134,8 +134,6 @@ function receivedMessage(event) {
 
   if (messageText) {
 
-    // If we receive a text message, check to see if it matches a keyword
-    // and send back the example. Otherwise, just echo the text we received.
     switch (messageText) {
       case 'generic':
         sendGenericMessage(senderID);
@@ -165,6 +163,21 @@ function callApiAi(recipientId, messageText) {
     console.log('Got response from Api.ai:', aiText);
     var result = response.result;
     console.log('Result:', result);
+
+    // save new user to db
+    if (result.action === 'select-club') {
+
+    	var user = {
+    		facebookId: recipientId,
+    		team: result.parameters.Entity,
+    		sendUpdates: true
+    	};
+
+    	db.collection('users').save(user, function (err, res) {
+    		if (err) return console.log(err);
+    		console.log('Saved user to database!');
+    	});
+    }
 
     var messageData = {
 	  recipient: {
