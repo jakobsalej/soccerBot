@@ -43,11 +43,8 @@ app.get('/', function (req, res) {
 
 // superfeedr subscription (first time confirmation)
 app.post('/feedr_webhook', function(req, res) {
-  
-    console.log("Validating webhook");
-    res.status(200).send(req.query['hub.challenge']);
-     
-  
+  console.log("Reddit post:", req);
+  res.status(200).send();
 });
 
 
