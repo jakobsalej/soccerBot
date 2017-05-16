@@ -42,7 +42,7 @@ app.get('/', function (req, res) {
 
 
 // superfeedr subscription (first time confirmation)
-app.get('/feedr_webhook', function(req, res) {
+app.post('/feedr_webhook', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify'] === VERIFY_TOKEN_FEEDR) {
     console.log("Validating webhook");
@@ -55,13 +55,13 @@ app.get('/feedr_webhook', function(req, res) {
 
 
 // get messages from feedr
-app.post('/feedr_webhook', function (req, res) {
-  console.log('Getting post request!');
+app.get('/feedr_webhook', function (req, res) {
+  console.log('Getting GET request!');
   var data = req.body;
   console.log('DATA:', data);
 
-  console.log('Sending back 200!');
-  res.sendStatus(200);
+  console.log('Sending back 200! and confirmation');
+  res.status(200).send(req.query['hub.challenge']);
 });
 
 
