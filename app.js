@@ -20,7 +20,7 @@ MongoClient.connect('mongodb://admin:admin@ds029381.mlab.com:29381/soccer_bot_db
 // variables
 const CLIENT_ACCESS_TOKEN = "59921fd442bb49c88ecd28aad2d97095";
 const VERIFY_TOKEN = "this_is_my_token";
-const VERIFY_TOKEN_FEEDR = "this_is_my_token_feedr";
+const VERIFY_TOKEN_FEEDR = "9e8e73e542230fad3a0cd65ba3827eb3";
 const PAGE_ACCESS_TOKEN = "EAAJA0YZCn42YBAB2nzQnW7emswOZBl6Xie8Ug8theCvmlt8ubSCviNhicKqqWyNsxVMhVzIrClZAsRpXmlnbbY5954ExbRNYtFZCo1ISxCXWYtEuNJR5LvWvKh3S4ffknNwDsCCKuRlcdLHuUuKcNzJlPpnWpBGLzLUun0p2dgZDZD";
 
 var apiaiApp = apiai(CLIENT_ACCESS_TOKEN);
