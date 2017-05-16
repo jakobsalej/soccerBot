@@ -43,8 +43,7 @@ app.get('/', function (req, res) {
 
 // superfeedr subscription (first time confirmation)
 app.post('/feedr_webhook', function(req, res) {
-  if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify'] === VERIFY_TOKEN_FEEDR) {
+  if (req.query['hub.mode'] === 'subscribe') {
     console.log("Validating webhook");
     res.status(200).send(req.query['hub.challenge']);
   } else {
