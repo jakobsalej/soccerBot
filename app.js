@@ -3,7 +3,6 @@ var request = require('request');
 var apiai = require('apiai');
 var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
-var Superfeedr = require('superfeedr').Superfeedr;
 
 var app = express();
 
@@ -44,13 +43,11 @@ app.get('/', function (req, res) {
 
 // superfeedr subscription (first time confirmation)
 app.post('/feedr_webhook', function(req, res) {
-  if (req.query['hub.mode'] === 'subscribe') {
+  
     console.log("Validating webhook");
     res.status(200).send(req.query['hub.challenge']);
-  } else {
-    console.error("Failed validation. Make sure the validation tokens match.");
-    res.sendStatus(403);          
-  }  
+     
+  
 });
 
 
@@ -291,9 +288,11 @@ function receivedPostback(event) {
 
 
 // SUPERFEEDR
-client = new Superfeedr("soccerbotdev@gmail.com", "fuzbaler27");
+/*
+var Superfeedr = require('superfeedr');
+var client = new Superfeedr("soccerbot", "fuzbaler27");
 client.on('connected', function() {
-  client.subscribe("http://blog.superfeedr.com/atom.xml", function(err, feed) {
+  client.subscribe("https://www.reddit.com/r/soccer/new.rss", function(err, feed) {
     console.log(feed);
     // { url: 'http://blog.superfeedr.com/atom.xml',
     //   title: 'Superfeedr Blog : Real-time cloudy thoughts from a super-hero',
@@ -327,3 +326,4 @@ client.on('connected', function() {
     //        actor: [Object] } ] }
   });
 });
+*/
