@@ -20,6 +20,7 @@ MongoClient.connect('mongodb://admin:admin@ds029381.mlab.com:29381/soccer_bot_db
 // variables
 const CLIENT_ACCESS_TOKEN = "59921fd442bb49c88ecd28aad2d97095";
 const VERIFY_TOKEN = "this_is_my_token";
+const VERIFY_TOKEN_FEEDR = "this_is_my_token_feedr";
 const PAGE_ACCESS_TOKEN = "EAAJA0YZCn42YBAB2nzQnW7emswOZBl6Xie8Ug8theCvmlt8ubSCviNhicKqqWyNsxVMhVzIrClZAsRpXmlnbbY5954ExbRNYtFZCo1ISxCXWYtEuNJR5LvWvKh3S4ffknNwDsCCKuRlcdLHuUuKcNzJlPpnWpBGLzLUun0p2dgZDZD";
 
 var apiaiApp = apiai(CLIENT_ACCESS_TOKEN);
@@ -37,6 +38,30 @@ var port = process.env.PORT || 3000;
 app.get('/', function (req, res) {
   console.log('Requesting root...');
   res.send('Hello World!');
+});
+
+
+// superfeedr subscription (first time confirmation)
+app.get('/feedr_webhook', function(req, res) {
+  if (req.query['hub.mode'] === 'subscribe' &&
+      req.query['hub.verify'] === VERIFY_TOKEN_FEEDR) {
+    console.log("Validating webhook");
+    res.status(200).send(req.query['hub.challenge']);
+  } else {
+    console.error("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);          
+  }  
+});
+
+
+// get messages from feedr
+app.post('/feedr_webhook', function (req, res) {
+  console.log('Getting post request!');
+  var data = req.body;
+  console.log('DATA:', data);
+
+  console.log('Sending back 200!');
+  res.sendStatus(200);
 });
 
 
